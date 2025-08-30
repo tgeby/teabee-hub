@@ -22,3 +22,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets
+.env
+.env.*
+
+# Firebase
+./firebase/
+.firebase/hosting.*
+
+# Emulator UI debug logs
+firebase-debug.log
+firebase-debug.*.log
