@@ -6,4 +6,8 @@ describe('Main page', () => {
     render(<App />);
     expect(screen.getByText(/TeaBee/i)).toBeInTheDocument();
   });
+  it('renders mission statement', () => {
+    render(<App />);
+    expect(screen.getByText(/Mission Statement/i)).toBeInTheDocument();
+  });
 });
