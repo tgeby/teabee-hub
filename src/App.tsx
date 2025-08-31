@@ -3,12 +3,12 @@ import './App.css'
 function App() {
 
   return (
-    <>
-      <h1>TeaBee</h1>
+    <div className="flex flex-col h-screen w-screen justify-around items-center self-center gap-4">
+      <h1 className="text-6xl">TeaBee</h1>
       <div>
-        <a href="https://flashcards.teabee.org">Flashcards</a>
+        <a className="text-4xl text-green-800 hover:text-green-600" href="https://flashcards.teabee.org">Flashcards</a>
       </div>
-    </>
+    </div>
   )
 }
 
