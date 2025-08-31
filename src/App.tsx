@@ -6,7 +6,7 @@ function App() {
     <>
       <h1>TeaBee</h1>
       <div>
-        <a href="https://teabee.org">Flashcards</a>
+        <a href="https://flashcards.teabee.org">Flashcards</a>
       </div>
     </>
   )
