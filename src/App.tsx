@@ -1,10 +1,23 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import './App.css'
 import Header from './components/layout/Header';
+import { useEffect } from 'react';
 
 function App() {
 
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      loginWithRedirect({
+        authorizationParams: {
+          prompt: "none",
+        },
+      }).catch(() => {
+        // No active Auth0 session
+      });
+    }
+  }, [isLoading, isAuthenticated, loginWithRedirect]);
 
   if (isLoading) {
     return <div>Loading...</div>;
