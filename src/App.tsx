@@ -9,24 +9,27 @@ function App() {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated && !triedSilentSignIn) {
-      getAccessTokenSilently()
-        .then(() => {
-          // Silent sign-in successful
-          console.log("Silent sign-in successful");
-        })
-        .catch((error) => {
-          // Silent sign-in failed
-          console.log("Silent sign-in failed", error);
-        })
-        .finally(() => {
+    const checkAuth = async () => {
+      if (!isLoading && !isAuthenticated && !triedSilentSignIn) {
+        try {
+          await getAccessTokenSilently({
+            timeoutInSeconds: 5,
+            cacheMode: "off",
+          });
+        } catch (error) {
+          console.log("Silent sign-in failed or timed out:", error);
+        } finally {
           setTriedSilentSignIn(true);
-        });
-    }
+        }
+      } else if (isAuthenticated) {
+        setTriedSilentSignIn(true);
+      }
+    };
+    
+    checkAuth();
   }, [isLoading, isAuthenticated, triedSilentSignIn, getAccessTokenSilently]);
 
-
-  if (isLoading) {
+  if (isLoading || !triedSilentSignIn) {
     return <div>Loading...</div>;
   }
 
