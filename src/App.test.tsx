@@ -9,7 +9,7 @@ vi.mock("@auth0/auth0-react", () => {
       isAuthenticated: false,
       isLoading: false,
       user: null,
-      loginWithRedirect: vi.fn().mockResolvedValue(undefined), // 👈 return a Promise
+      getAccessTokenSilently: vi.fn().mockResolvedValue(undefined), // 👈 return a Promise
       logout: vi.fn().mockResolvedValue(undefined),
     }),
   };
