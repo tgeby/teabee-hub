@@ -1,10 +1,30 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import './App.css'
 import Header from './components/layout/Header';
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [triedSilentSignIn, setTriedSilentSignIn] = useState(false);
 
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated && !triedSilentSignIn) {
+      getAccessTokenSilently()
+        .then(() => {
+          // Silent sign-in successful
+          console.log("Silent sign-in successful");
+        })
+        .catch((error) => {
+          // Silent sign-in failed
+          console.log("Silent sign-in failed", error);
+        })
+        .finally(() => {
+          setTriedSilentSignIn(true);
+        });
+    }
+  }, [isLoading, isAuthenticated, triedSilentSignIn, getAccessTokenSilently]);
+
 
   if (isLoading) {
     return <div>Loading...</div>;
