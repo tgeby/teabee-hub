@@ -12,6 +12,8 @@ createRoot(document.getElementById('root')!).render(
         authorizationParams = {{
           redirect_uri: import.meta.env.VITE_AUTH_CALLBACK_URL
         }}
+        cacheLocation="localstorage"
+        useRefreshTokens={true}
       >
         <App/>
       </Auth0Provider>

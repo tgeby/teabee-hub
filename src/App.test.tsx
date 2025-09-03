@@ -1,13 +1,19 @@
 import { render, screen } from '@testing-library/react'
 import App from './App'
 
-vi.mock('@auth0/auth0-react', () => ({
-  useAuth0: () => ({
-    isAuthenticated: false,
-    user: null,
-    isLoading: false,
-  }),
-}))
+// Mock the @auth0/auth0-react module
+vi.mock("@auth0/auth0-react", () => {
+  return {
+    Auth0Provider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    useAuth0: () => ({
+      isAuthenticated: false,
+      isLoading: false,
+      user: null,
+      loginWithRedirect: vi.fn().mockResolvedValue(undefined), // 👈 return a Promise
+      logout: vi.fn().mockResolvedValue(undefined),
+    }),
+  };
+});
 
 describe('Main page', () => {
   beforeEach(() => {
