@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor, act } from '@testing-library/react'
 import App from './App'
 
 // Mock the @auth0/auth0-react module
@@ -16,8 +16,14 @@ vi.mock("@auth0/auth0-react", () => {
 });
 
 describe('Main page', () => {
-  beforeEach(() => {
-    render(<App />);
+  beforeEach(async () => {
+    await act(async () => {
+      render(<App />);
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText(/Loading.../i)).not.toBeInTheDocument();
+    });
   });
   it('renders website title in header', () => {
     expect(screen.getByRole('heading', { name: /TeaBee/i})).toBeInTheDocument();
