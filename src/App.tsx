@@ -37,6 +37,9 @@ function App() {
           <div className="flex flex-col gap-5 justify-center w-full items-center">
             <a className="text-[clamp(1rem,4vw,3rem)] hover:text-green-600" href="https://flashcards.teabee.org">Flashcards</a>
           </div>
+          <div className="flex flex-col gap-5 justify-center w-full items-center">
+            <a className="text-[clamp(1rem,4vw,3rem)] hover:text-green-600" href="https://timer.teabee.org">Interval Timer</a>
+          </div>
         </div>
       </div>
     </div>
