@@ -6,16 +6,15 @@ import { useEffect, useState } from 'react';
 function App() {
   const [triedSilentSignIn, setTriedSilentSignIn] = useState(false);
 
-  const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
+  const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const checkAuth = async () => {
       if (!isLoading && !isAuthenticated && !triedSilentSignIn) {
         try {
-          await loginWithRedirect({
-            authorizationParams: {
-              prompt: 'none', // Attempt silent authentication
-            }
+          await getAccessTokenSilently({
+            timeoutInSeconds: 5,
+            cacheMode: "off"
           });
         } catch (error) {
           console.log("Silent sign-in failed or timed out:", error);
@@ -28,7 +27,7 @@ function App() {
     };
     
     checkAuth();
-  }, [isLoading, isAuthenticated, triedSilentSignIn, loginWithRedirect]);
+  }, [isLoading, isAuthenticated, triedSilentSignIn, getAccessTokenSilently]);
 
   if (isLoading) {
     return <div>Loading...</div>;
