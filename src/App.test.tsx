@@ -16,11 +16,9 @@ vi.mock("@auth0/auth0-react", () => {
 });
 
 describe('Main page', () => {
-  let container: HTMLElement;
   beforeEach(async () => {
     await act(async () => {
-      const result = render(<App />);
-      container = result.container;
+      render(<App />);
     });
 
     await waitFor(() => {
