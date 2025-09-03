@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 function App() {
   const [triedSilentSignIn, setTriedSilentSignIn] = useState(false);
 
-  const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -17,7 +17,7 @@ function App() {
             cacheMode: "off"
           });
         } catch (error) {
-          console.log("Silent sign-in failed or timed out:", error);
+          console.log("No existing session found");
         } finally {
           setTriedSilentSignIn(true);
         }
@@ -29,15 +29,6 @@ function App() {
     checkAuth();
   }, [isLoading, isAuthenticated, triedSilentSignIn, getAccessTokenSilently]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isAuthenticated) {
-    console.log(user?.name);
-  } else {
-    console.log("Not logged in");
-  }
 
   return (
 
