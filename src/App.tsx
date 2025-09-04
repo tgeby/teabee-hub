@@ -11,6 +11,7 @@ function App() {
   useEffect(() => {
     const checkAuth = async () => {
       if (!isLoading && !isAuthenticated && !triedSilentSignIn) {
+        setTriedSilentSignIn(true);
         try {
           await getAccessTokenSilently({
             timeoutInSeconds: 5,
@@ -21,9 +22,7 @@ function App() {
         } finally {
           setTriedSilentSignIn(true);
         }
-      } else if (isAuthenticated) {
-        setTriedSilentSignIn(true);
-      }
+      } 
     };
     
     checkAuth();
