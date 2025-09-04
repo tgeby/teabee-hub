@@ -17,7 +17,7 @@ function App() {
             cacheMode: "off"
           });
         } catch (error) {
-          console.log("No existing session found");
+          console.log("No existing session found: ", error);
         } finally {
           setTriedSilentSignIn(true);
         }
