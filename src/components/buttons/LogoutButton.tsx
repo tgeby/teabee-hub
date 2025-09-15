@@ -1,14 +1,24 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { useState } from "react";
+import { auth } from "../../firebase";
+import { signOut } from "firebase/auth";
 
-const LogoutButton = () => {
-	const { logout } = useAuth0();
-
-	const handleLogout = () => {
-		logout({ logoutParams: { returnTo: window.location.origin } });
+export default function LogoutButton (){
+	const [loading, setLoading] = useState(false);
+	
+	const handleLogout = async () => {
+		setLoading(true);
+		try {
+			await signOut(auth);
+			window.location.href = "/";
+		} catch (error) {
+			console.error("Error signing out:", error);
+		} finally {
+			setLoading(false);
+		}
 	}
-
 	return (
 		<button
+			disabled={loading}
 			onClick={() => handleLogout()}
 			className="
 				bg-blue-500 
@@ -20,9 +30,7 @@ const LogoutButton = () => {
 				py-0.5 sm:py-1 md:py-2
 				text-[clamp(.5rem,3vw,1.5rem)]"
 		>
-			Log Out
+			{loading ? "Logging out..." : "Log Out"}
 		</button>
 	);
 }
-
-export default LogoutButton;

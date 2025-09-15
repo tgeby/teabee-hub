@@ -1,24 +1,15 @@
 import { render, screen, waitFor, act } from '@testing-library/react'
 import App from './App'
-
-// Mock the @auth0/auth0-react module
-vi.mock("@auth0/auth0-react", () => {
-  return {
-    Auth0Provider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    useAuth0: () => ({
-      isAuthenticated: false,
-      isLoading: false,
-      user: null,
-      getAccessTokenSilently: vi.fn().mockResolvedValue(undefined), // 👈 return a Promise
-      logout: vi.fn().mockResolvedValue(undefined),
-    }),
-  };
-});
+import { AuthProvider } from './contexts/AuthContext';
 
 describe('Main page', () => {
   beforeEach(async () => {
     await act(async () => {
-      render(<App />);
+      render(
+      <AuthProvider>
+          <App />
+      </AuthProvider>
+      );
     });
 
     await waitFor(() => {

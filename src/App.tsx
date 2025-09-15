@@ -1,33 +1,11 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import './App.css'
 import Header from './components/layout/Header';
-import { useEffect, useState } from 'react';
-
+import { useAuth } from './contexts/AuthContext.tsx';
 function App() {
-  const [triedSilentSignIn, setTriedSilentSignIn] = useState(false);
 
-  const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+  const { user, loading } = useAuth();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      if (!isLoading && !isAuthenticated && !triedSilentSignIn) {
-        setTriedSilentSignIn(true);
-        try {
-          await getAccessTokenSilently({
-            timeoutInSeconds: 5,
-            cacheMode: "off"
-          });
-        } catch (error) {
-          console.log("No existing session found: ", error);
-        } finally {
-          setTriedSilentSignIn(true);
-        }
-      } 
-    };
-    
-    checkAuth();
-  }, [isLoading, isAuthenticated, triedSilentSignIn, getAccessTokenSilently]);
-
+  if (loading) return <p>Loading...</p>;
 
   return (
 
@@ -52,6 +30,9 @@ function App() {
           </div>
           <div className="flex flex-col gap-5 justify-center w-full items-center">
             <a className="text-[clamp(1rem,4vw,3rem)] hover:text-green-600" href="https://timer.teabee.org">Interval Timer</a>
+          </div>
+          <div>
+            {user ? <p>Welcome, {user.displayName || user.email}</p> : <p>Please sign in</p>}
           </div>
         </div>
       </div>
