@@ -1,24 +1,33 @@
 import { render, screen, waitFor, act } from '@testing-library/react'
 import App from './App'
+import { AuthProvider } from './contexts/AuthContext';
 
-// Mock the @auth0/auth0-react module
-vi.mock("@auth0/auth0-react", () => {
-  return {
-    Auth0Provider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    useAuth0: () => ({
-      isAuthenticated: false,
-      isLoading: false,
-      user: null,
-      getAccessTokenSilently: vi.fn().mockResolvedValue(undefined), // 👈 return a Promise
-      logout: vi.fn().mockResolvedValue(undefined),
-    }),
-  };
-});
+vi.mock("firebase/app", () => ({
+  initializeApp: vi.fn(() => ({})),
+  getApps: vi.fn(() => []),
+  getApp: vi.fn(() => ({})),
+}));
+
+vi.mock("firebase/auth", () => ({
+  getAuth: vi.fn(() => ({})),
+  onAuthStateChanged: vi.fn((_auth, callback) => {
+    // Fake user state for tests
+    callback(null); // unauthenticated
+    // callback({ uid: "123", email: "test@teabee.org" }); // logged in
+    return () => {};
+  }),
+  signInWithPopup: vi.fn(() => Promise.resolve({ user: { uid: "123" } })),
+  signOut: vi.fn(() => Promise.resolve()),
+}));
 
 describe('Main page', () => {
   beforeEach(async () => {
     await act(async () => {
-      render(<App />);
+      render(
+      <AuthProvider>
+          <App />
+      </AuthProvider>
+      );
     });
 
     await waitFor(() => {
